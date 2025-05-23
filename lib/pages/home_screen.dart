@@ -208,7 +208,7 @@ class HomeScreen extends StatelessWidget {
                               Icon(Icons.score, color: Color(0xFF2196F3), size: 16),
                               SizedBox(width: 8),
                               Text(
-                                'คะแนนสุขภาพการเงินของคุณ',
+                                'เครดิตของคุณ',
                                 style: TextStyle(
                                   fontFamily: 'Kanit',
                                   fontSize: 14,
