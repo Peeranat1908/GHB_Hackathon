@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'analyst_page.dart';
-import 'scan_page.dart';
 import 'setting_page.dart';
 import 'home_screen.dart';
 
@@ -15,7 +14,6 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    const ScanScreen(),
     const AnalystScreen(),
     const SettingScreen()
   ];
@@ -77,10 +75,6 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded, size: 28),
               label: 'หน้าแรก',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.qr_code_scanner_rounded, size: 28),
-              label: 'สแกน',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.trending_up_rounded, size: 28),
