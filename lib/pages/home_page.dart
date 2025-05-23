@@ -1,3 +1,4 @@
+// home_page.dart
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
 import 'scan_page.dart';
@@ -6,14 +7,13 @@ import 'home_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-
+  
   final List<Widget> _pages = [
     const HomeScreen(),
     const ScanScreen(),
@@ -30,25 +30,29 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFE8F5E8),
       appBar: AppBar(
-        title: const Text('GHB Application', style: TextStyle(fontFamily: 'Kanit')),
-        backgroundColor: Colors.red,
+        title: const Text('วิเคราะห์การเงินของคุณ', 
+          style: TextStyle(fontFamily: 'Kanit', fontWeight: FontWeight.bold)),
+        backgroundColor: const Color(0xFFE74C3C),
         titleTextStyle: const TextStyle(
           fontFamily: 'Kanit',
           color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
         ),
+        elevation: 0,
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedFontSize: 14,
-        unselectedFontSize: 12,
+        selectedFontSize: 12,
+        unselectedFontSize: 10,
         selectedLabelStyle: const TextStyle(fontFamily: 'Kanit'),
         unselectedLabelStyle: const TextStyle(fontFamily: 'Kanit'),
+        selectedItemColor: const Color(0xFFE74C3C),
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
@@ -56,16 +60,16 @@ class _HomePageState extends State<HomePage> {
             label: 'หน้าแรก',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.document_scanner),
-            label: 'สแกน',
+            icon: Icon(Icons.qr_code_scanner),
+            label: 'ออมเงิน',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'โปรไฟล์',
+            icon: Icon(Icons.trending_up),
+            label: 'วิเคราะห์',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: 'บัญชี',
+            icon: Icon(Icons.account_circle),
+            label: '',
           ),
         ],
       ),
