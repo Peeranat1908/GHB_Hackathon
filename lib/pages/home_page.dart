@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            label: '',
+            label: 'ตั้งค่า',
           ),
         ],
       ),
