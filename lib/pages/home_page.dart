@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.qr_code_scanner_rounded, size: 28),
-              label: 'ออมเงิน',
+              label: 'สแกน',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.trending_up_rounded, size: 28),
