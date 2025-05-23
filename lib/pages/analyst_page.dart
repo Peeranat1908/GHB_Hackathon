@@ -42,9 +42,13 @@ class _AnalystScreenState extends State<AnalystScreen>
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
   }
 
   @override
@@ -90,46 +94,44 @@ class _AnalystScreenState extends State<AnalystScreen>
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('ข้อผิดพลาด'),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('ตกลง'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('ข้อผิดพลาด'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ตกลง'),
           ),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, // หรือไม่ต้องใส่ก็ได้
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFE8F5E8), Color(0xFFF0F8F0), Colors.white],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 40),
-              _buildHeader(),
-              const SizedBox(height: 32),
-              _buildUploadSection(),
-              const SizedBox(height: 32),
-              if (_isAnalyzing) _buildAnalysisProgress(),
-              if (_showAnalysis) _buildAnalysisResults(),
-            ],
-          ),
+      backgroundColor: const Color(0xFFF8FAFC),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            
+            // Header
+            _buildHeader(),
+            const SizedBox(height: 32),
+
+            // Upload Section
+            _buildUploadSection(),
+            const SizedBox(height: 32),
+
+            // Analysis Progress
+            if (_isAnalyzing) _buildAnalysisProgress(),
+            
+            // Analysis Results
+            if (_showAnalysis) _buildAnalysisResults(),
+          ],
         ),
       ),
     );
@@ -161,7 +163,11 @@ class _AnalystScreenState extends State<AnalystScreen>
               color: Colors.white.withOpacity(0.2),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.analytics, color: Colors.white, size: 32),
+            child: const Icon(
+              Icons.analytics,
+              color: Colors.white,
+              size: 32,
+            ),
           ),
           const SizedBox(width: 20),
           const Expanded(
@@ -179,7 +185,10 @@ class _AnalystScreenState extends State<AnalystScreen>
                 SizedBox(height: 8),
                 Text(
                   'อัปโหลดไฟล์เพื่อเริ่มการวิเคราะห์',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
@@ -211,16 +220,14 @@ class _AnalystScreenState extends State<AnalystScreen>
               width: double.infinity,
               padding: const EdgeInsets.all(40),
               decoration: BoxDecoration(
-                color:
-                    _uploadedFile != null
-                        ? const Color(0xFFE8F5E8)
-                        : const Color(0xFFF8FAFC),
+                color: _uploadedFile != null 
+                    ? const Color(0xFFE8F5E8) 
+                    : const Color(0xFFF8FAFC),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color:
-                      _uploadedFile != null
-                          ? const Color(0xFF10B981)
-                          : const Color(0xFFE2E8F0),
+                  color: _uploadedFile != null 
+                      ? const Color(0xFF10B981) 
+                      : const Color(0xFFE2E8F0),
                   width: 2,
                   style: BorderStyle.solid,
                 ),
@@ -230,40 +237,37 @@ class _AnalystScreenState extends State<AnalystScreen>
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color:
-                          _uploadedFile != null
-                              ? const Color(0xFF10B981).withOpacity(0.1)
-                              : const Color(0xFF667EEA).withOpacity(0.1),
+                      color: _uploadedFile != null 
+                          ? const Color(0xFF10B981).withOpacity(0.1)
+                          : const Color(0xFF667EEA).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
-                      _uploadedFile != null
-                          ? Icons.check_circle
+                      _uploadedFile != null 
+                          ? Icons.check_circle 
                           : Icons.cloud_upload,
                       size: 48,
-                      color:
-                          _uploadedFile != null
-                              ? const Color(0xFF10B981)
-                              : const Color(0xFF667EEA),
+                      color: _uploadedFile != null 
+                          ? const Color(0xFF10B981)
+                          : const Color(0xFF667EEA),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _uploadedFile != null
-                        ? 'ไฟล์ถูกอัปโหลดแล้ว'
+                    _uploadedFile != null 
+                        ? 'ไฟล์ถูกอัปโหลดแล้ว' 
                         : 'แตะเพื่อเลือกไฟล์',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color:
-                          _uploadedFile != null
-                              ? const Color(0xFF10B981)
-                              : const Color(0xFF334155),
+                      color: _uploadedFile != null 
+                          ? const Color(0xFF10B981)
+                          : const Color(0xFF334155),
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _uploadedFile != null
+                    _uploadedFile != null 
                         ? _uploadedFile!.path.split('/').last
                         : 'รองรับไฟล์ PDF, CSV, XLSX, TXT',
                     style: const TextStyle(
@@ -275,7 +279,7 @@ class _AnalystScreenState extends State<AnalystScreen>
               ),
             ),
           ),
-
+          
           // File Info
           if (_uploadedFile != null)
             Container(
@@ -287,7 +291,10 @@ class _AnalystScreenState extends State<AnalystScreen>
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.insert_drive_file, color: Color(0xFF667EEA)),
+                  const Icon(
+                    Icons.insert_drive_file,
+                    color: Color(0xFF667EEA),
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -349,7 +356,10 @@ class _AnalystScreenState extends State<AnalystScreen>
           const SizedBox(height: 8),
           Text(
             'โปรดรอสักครู่',
-            style: TextStyle(color: Colors.grey[600], fontSize: 14),
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 14,
+            ),
           ),
         ],
       ),
@@ -365,11 +375,11 @@ class _AnalystScreenState extends State<AnalystScreen>
           // Summary Cards
           _buildSummaryCards(),
           const SizedBox(height: 24),
-
+          
           // Monthly Trend
           _buildMonthlyTrend(),
           const SizedBox(height: 24),
-
+          
           // Category Breakdown
           _buildCategoryBreakdown(),
         ],
@@ -379,13 +389,9 @@ class _AnalystScreenState extends State<AnalystScreen>
 
   Widget _buildSummaryCards() {
     final totalIncome = _monthlyData.fold<double>(
-      0,
-      (sum, item) => sum + item['income'],
-    );
+        0, (sum, item) => sum + item['income']);
     final totalExpense = _monthlyData.fold<double>(
-      0,
-      (sum, item) => sum + item['expense'],
-    );
+        0, (sum, item) => sum + item['expense']);
     final netSaving = totalIncome - totalExpense;
 
     return Row(
@@ -423,24 +429,26 @@ class _AnalystScreenState extends State<AnalystScreen>
     );
   }
 
-  Widget _buildSummaryCard(
-    String title,
-    String amount,
-    IconData icon,
-    Color iconColor,
-    Color backgroundColor,
-  ) {
+  Widget _buildSummaryCard(String title, String amount, IconData icon, 
+      Color iconColor, Color backgroundColor) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: iconColor.withOpacity(0.2), width: 1),
+        border: Border.all(
+          color: iconColor.withOpacity(0.2),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: iconColor, size: 24),
+          Icon(
+            icon,
+            color: iconColor,
+            size: 24,
+          ),
           const SizedBox(height: 12),
           Text(
             title,
@@ -500,7 +508,7 @@ class _AnalystScreenState extends State<AnalystScreen>
                 final maxValue = 60000.0;
                 final incomeHeight = (data['income'] / maxValue) * 150;
                 final expenseHeight = (data['expense'] / maxValue) * 150;
-
+                
                 return Container(
                   width: 80,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -572,7 +580,10 @@ class _AnalystScreenState extends State<AnalystScreen>
         const SizedBox(width: 8),
         Text(
           label,
-          style: const TextStyle(fontSize: 14, color: Color(0xFF64748B)),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF64748B),
+          ),
         ),
       ],
     );
@@ -612,11 +623,9 @@ class _AnalystScreenState extends State<AnalystScreen>
 
   Widget _buildCategoryRow(Map<String, dynamic> category) {
     final totalExpense = _categoryData.fold<double>(
-      0,
-      (sum, item) => sum + item['amount'],
-    );
+        0, (sum, item) => sum + item['amount']);
     final percentage = (category['amount'] / totalExpense * 100);
-
+    
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: Column(
