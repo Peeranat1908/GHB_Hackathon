@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'analyst_page.dart';
 import 'setting_page.dart';
 import 'home_screen.dart';
-import 'product_screen.dart'; // <<< เพิ่มบรรทัดนี้
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,7 +16,6 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HomeScreen(),
     const AnalystScreen(),
-    const ProductScreen(), // <<< เพิ่มบรรทัดนี้
     const SettingScreen()
   ];
 
