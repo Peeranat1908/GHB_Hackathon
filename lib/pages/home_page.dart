@@ -1,7 +1,9 @@
+// lib/pages/home_page.dart
 import 'package:flutter/material.dart';
 import 'analyst_page.dart';
 import 'setting_page.dart';
 import 'home_screen.dart';
+import 'product_screen.dart'; // <<< เพิ่มบรรทัดนี้
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HomeScreen(),
     const AnalystScreen(),
+    const ProductScreen(), // <<< เพิ่มบรรทัดนี้
     const SettingScreen()
   ];
 
@@ -23,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
   }
- 
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             BoxShadow(
               color: Colors.black12,
               blurRadius: 12,
-              offset: Offset(0, -2),
+              offset: const Offset(0, -2),
             ),
           ],
         ),
@@ -67,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           unselectedFontSize: 11,
           selectedLabelStyle: const TextStyle(fontFamily: 'Kanit'),
           unselectedLabelStyle: const TextStyle(fontFamily: 'Kanit'),
-          selectedItemColor: const Color(0xFFE74C3C),
+          selectedItemColor: const Color(0xFFE74C3C), // เปลี่ยนสีให้เข้ากับธีม
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
           showUnselectedLabels: true,
@@ -81,7 +84,7 @@ class _HomePageState extends State<HomePage> {
               label: 'วิเคราะห์',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_rounded, size: 28),
+              icon: Icon(Icons.settings_rounded, size: 28),
               label: 'ตั้งค่า',
             ),
           ],

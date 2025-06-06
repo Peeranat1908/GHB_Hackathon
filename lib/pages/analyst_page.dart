@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
+import 'dart:convert'; // For JSON encoding/decoding
 
 class AnalystScreen extends StatefulWidget {
   const AnalystScreen({Key? key}) : super(key: key);
@@ -17,23 +19,11 @@ class _AnalystScreenState extends State<AnalystScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
-  // Mock data for analysis
-  final List<Map<String, dynamic>> _monthlyData = [
-    {'month': 'ม.ค.', 'income': 45000, 'expense': 32000},
-    {'month': 'ก.พ.', 'income': 48000, 'expense': 35000},
-    {'month': 'มี.ค.', 'income': 52000, 'expense': 38000},
-    {'month': 'เม.ย.', 'income': 47000, 'expense': 33000},
-    {'month': 'พ.ค.', 'income': 51000, 'expense': 36000},
-    {'month': 'มิ.ย.', 'income': 49000, 'expense': 34000},
-  ];
-
-  final List<Map<String, dynamic>> _categoryData = [
-    {'category': 'อาหาร', 'amount': 15000, 'color': Colors.red},
-    {'category': 'ที่อยู่อาศัย', 'amount': 12000, 'color': Colors.blue},
-    {'category': 'คมนาคม', 'amount': 8000, 'color': Colors.green},
-    {'category': 'บันเทิง', 'amount': 5000, 'color': Colors.orange},
-    {'category': 'อื่นๆ', 'amount': 7000, 'color': Colors.purple},
-  ];
+  // Dynamic data for analysis
+  List<Map<String, dynamic>> _monthlyData = [];
+  List<Map<String, dynamic>> _categoryData = [];
+  int _creditScore = 0;
+  String _financialHealth = 'ไม่มีข้อมูล';
 
   @override
   void initState() {
@@ -49,12 +39,40 @@ class _AnalystScreenState extends State<AnalystScreen>
       parent: _animationController,
       curve: Curves.easeInOut,
     ));
+    _loadAnalysisResults(); // Load existing results on init
   }
 
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadAnalysisResults() async {
+    final prefs = await SharedPreferences.getInstance();
+    final monthlyDataString = prefs.getString('monthlyData');
+    final categoryDataString = prefs.getString('categoryData');
+    final creditScore = prefs.getInt('creditScore');
+    final financialHealth = prefs.getString('financialHealth');
+
+    if (monthlyDataString != null && categoryDataString != null) {
+      setState(() {
+        _monthlyData = List<Map<String, dynamic>>.from(json.decode(monthlyDataString));
+        _categoryData = List<Map<String, dynamic>>.from(json.decode(categoryDataString));
+        _creditScore = creditScore ?? 0;
+        _financialHealth = financialHealth ?? 'ไม่มีข้อมูล';
+        _showAnalysis = true; // Show analysis if data exists
+      });
+      _animationController.forward();
+    }
+  }
+
+  Future<void> _saveAnalysisResults() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('monthlyData', json.encode(_monthlyData));
+    await prefs.setString('categoryData', json.encode(_categoryData));
+    await prefs.setInt('creditScore', _creditScore);
+    await prefs.setString('financialHealth', _financialHealth);
   }
 
   Future<void> _pickFile() async {
@@ -78,10 +96,17 @@ class _AnalystScreenState extends State<AnalystScreen>
   void _startAnalysis() async {
     setState(() {
       _isAnalyzing = true;
+      _showAnalysis = false; // Hide previous analysis while analyzing
     });
 
     // Simulate analysis time
     await Future.delayed(const Duration(seconds: 3));
+
+    // Generate mock dynamic data (replace with actual parsing and analysis)
+    _generateMockAnalysisData();
+    _calculateCreditScore();
+
+    await _saveAnalysisResults(); // Save the new results
 
     setState(() {
       _isAnalyzing = false;
@@ -90,6 +115,54 @@ class _AnalystScreenState extends State<AnalystScreen>
 
     _animationController.forward();
   }
+
+  void _generateMockAnalysisData() {
+    // Generate mock monthly data
+    _monthlyData = [
+      {'month': 'ม.ค.', 'income': 40000 + (DateTime.now().millisecond % 10) * 1000, 'expense': 30000 + (DateTime.now().millisecond % 10) * 500},
+      {'month': 'ก.พ.', 'income': 42000 + (DateTime.now().millisecond % 10) * 1000, 'expense': 31000 + (DateTime.now().millisecond % 10) * 500},
+      {'month': 'มี.ค.', 'income': 45000 + (DateTime.now().millisecond % 10) * 1000, 'expense': 33000 + (DateTime.now().millisecond % 10) * 500},
+      {'month': 'เม.ย.', 'income': 43000 + (DateTime.now().millisecond % 10) * 1000, 'expense': 32000 + (DateTime.now().millisecond % 10) * 500},
+      {'month': 'พ.ค.', 'income': 48000 + (DateTime.now().millisecond % 10) * 1000, 'expense': 34000 + (DateTime.now().millisecond % 10) * 500},
+      {'month': 'มิ.ย.', 'income': 46000 + (DateTime.now().millisecond % 10) * 1000, 'expense': 33500 + (DateTime.now().millisecond % 10) * 500},
+    ];
+
+    // Generate mock category data
+    _categoryData = [
+      {'category': 'อาหาร', 'amount': 14000 + (DateTime.now().millisecond % 10) * 100, 'color': Colors.red.value},
+      {'category': 'ที่อยู่อาศัย', 'amount': 11000 + (DateTime.now().millisecond % 10) * 100, 'color': Colors.blue.value},
+      {'category': 'คมนาคม', 'amount': 7500 + (DateTime.now().millisecond % 10) * 100, 'color': Colors.green.value},
+      {'category': 'บันเทิง', 'amount': 4500 + (DateTime.now().millisecond % 10) * 100, 'color': Colors.orange.value},
+      {'category': 'อื่นๆ', 'amount': 6500 + (DateTime.now().millisecond % 10) * 100, 'color': Colors.purple.value},
+    ];
+  }
+
+  void _calculateCreditScore() {
+    // Simple mock credit score calculation based on income/expense ratio
+    final totalIncome = _monthlyData.fold<double>(0, (sum, item) => sum + item['income']);
+    final totalExpense = _monthlyData.fold<double>(0, (sum, item) => sum + item['expense']);
+
+    if (totalIncome > 0) {
+      final ratio = (totalIncome - totalExpense) / totalIncome;
+      _creditScore = (ratio * 100).round() + 50; // Base score + ratio influence
+      if (_creditScore < 0) _creditScore = 0;
+      if (_creditScore > 100) _creditScore = 1000;
+
+      if (ratio > 0.3) {
+        _financialHealth = 'ดีเยี่ยม';
+      } else if (ratio > 0.1) {
+        _financialHealth = 'ดี';
+      } else if (ratio > 0) {
+        _financialHealth = 'ปานกลาง';
+      } else {
+        _financialHealth = 'ต้องปรับปรุง';
+      }
+    } else {
+      _creditScore = 0;
+      _financialHealth = 'ไม่มีข้อมูล';
+    }
+  }
+
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -117,7 +190,7 @@ class _AnalystScreenState extends State<AnalystScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 40),
-            
+
             // Header
             _buildHeader(),
             const SizedBox(height: 32),
@@ -128,7 +201,7 @@ class _AnalystScreenState extends State<AnalystScreen>
 
             // Analysis Progress
             if (_isAnalyzing) _buildAnalysisProgress(),
-            
+
             // Analysis Results
             if (_showAnalysis) _buildAnalysisResults(),
           ],
@@ -220,13 +293,13 @@ class _AnalystScreenState extends State<AnalystScreen>
               width: double.infinity,
               padding: const EdgeInsets.all(40),
               decoration: BoxDecoration(
-                color: _uploadedFile != null 
-                    ? const Color(0xFFE8F5E8) 
+                color: _uploadedFile != null
+                    ? const Color(0xFFE8F5E8)
                     : const Color(0xFFF8FAFC),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: _uploadedFile != null 
-                      ? const Color(0xFF10B981) 
+                  color: _uploadedFile != null
+                      ? const Color(0xFF10B981)
                       : const Color(0xFFE2E8F0),
                   width: 2,
                   style: BorderStyle.solid,
@@ -237,37 +310,37 @@ class _AnalystScreenState extends State<AnalystScreen>
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: _uploadedFile != null 
+                      color: _uploadedFile != null
                           ? const Color(0xFF10B981).withOpacity(0.1)
                           : const Color(0xFF667EEA).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
-                      _uploadedFile != null 
-                          ? Icons.check_circle 
+                      _uploadedFile != null
+                          ? Icons.check_circle
                           : Icons.cloud_upload,
                       size: 48,
-                      color: _uploadedFile != null 
+                      color: _uploadedFile != null
                           ? const Color(0xFF10B981)
                           : const Color(0xFF667EEA),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _uploadedFile != null 
-                        ? 'ไฟล์ถูกอัปโหลดแล้ว' 
+                    _uploadedFile != null
+                        ? 'ไฟล์ถูกอัปโหลดแล้ว'
                         : 'แตะเพื่อเลือกไฟล์',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: _uploadedFile != null 
+                      color: _uploadedFile != null
                           ? const Color(0xFF10B981)
                           : const Color(0xFF334155),
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _uploadedFile != null 
+                    _uploadedFile != null
                         ? _uploadedFile!.path.split('/').last
                         : 'รองรับไฟล์ PDF, CSV, XLSX, TXT',
                     style: const TextStyle(
@@ -279,7 +352,7 @@ class _AnalystScreenState extends State<AnalystScreen>
               ),
             ),
           ),
-          
+
           // File Info
           if (_uploadedFile != null)
             Container(
@@ -375,11 +448,11 @@ class _AnalystScreenState extends State<AnalystScreen>
           // Summary Cards
           _buildSummaryCards(),
           const SizedBox(height: 24),
-          
+
           // Monthly Trend
           _buildMonthlyTrend(),
           const SizedBox(height: 24),
-          
+
           // Category Breakdown
           _buildCategoryBreakdown(),
         ],
@@ -429,7 +502,7 @@ class _AnalystScreenState extends State<AnalystScreen>
     );
   }
 
-  Widget _buildSummaryCard(String title, String amount, IconData icon, 
+  Widget _buildSummaryCard(String title, String amount, IconData icon,
       Color iconColor, Color backgroundColor) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -505,10 +578,10 @@ class _AnalystScreenState extends State<AnalystScreen>
               itemCount: _monthlyData.length,
               itemBuilder: (context, index) {
                 final data = _monthlyData[index];
-                final maxValue = 60000.0;
+                final maxValue = _monthlyData.map((e) => e['income'] > e['expense'] ? e['income'] : e['expense']).reduce((a, b) => a > b ? a : b) * 1.2; // Dynamic max value
                 final incomeHeight = (data['income'] / maxValue) * 150;
                 final expenseHeight = (data['expense'] / maxValue) * 150;
-                
+
                 return Container(
                   width: 80,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -625,7 +698,7 @@ class _AnalystScreenState extends State<AnalystScreen>
     final totalExpense = _categoryData.fold<double>(
         0, (sum, item) => sum + item['amount']);
     final percentage = (category['amount'] / totalExpense * 100);
-    
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -639,7 +712,7 @@ class _AnalystScreenState extends State<AnalystScreen>
                     width: 12,
                     height: 12,
                     decoration: BoxDecoration(
-                      color: category['color'],
+                      color: Color(category['color']), // Use Color constructor
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -668,7 +741,7 @@ class _AnalystScreenState extends State<AnalystScreen>
           LinearProgressIndicator(
             value: percentage / 100,
             backgroundColor: Colors.grey[200],
-            valueColor: AlwaysStoppedAnimation<Color>(category['color']),
+            valueColor: AlwaysStoppedAnimation<Color>(Color(category['color'])), // Use Color constructor
             minHeight: 6,
           ),
         ],
