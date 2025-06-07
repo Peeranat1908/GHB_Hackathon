@@ -1,382 +1,288 @@
-// lib/pages/product_screen.dart
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // <<< Import SharedPreferences
-import 'home_page.dart';
-import 'consent_screen.dart'; // <<< Import ConsentScreen
+import 'package:ghb_app/pages/consent_screen.dart';
 
-class ProductScreen extends StatefulWidget { // Changed to StatefulWidget
-  const ProductScreen({Key? key}) : super(key: key);
+
+class ProductScreen extends StatefulWidget {
+  const ProductScreen({super.key});
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState();
+  State<ProductScreen> createState() => _ProductPageState();
 }
 
-class _ProductScreenState extends State<ProductScreen> { // State class for ProductScreen
+class _ProductPageState extends State<ProductScreen> {
+  int _selectedIndex = 2; // For the bottom navigation bar, home is typically central
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      body: CustomScrollView(
-        slivers: [
-          _buildSliverAppBar(),
-          SliverToBoxAdapter(
-            child: _buildWelcomeCard(context),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                // NEW PRODUCT GROUP FOR PROMPT KUU
-                _buildProductGroup(
-                  context,
-                  title: 'บริการของ PromptKuu',
-                  products: [
-                    _ProductItem(
-                      icon: Icons.track_changes,
-                      title: 'PromptKuu: วิเคราะห์การเงินของคุณ',
-                      subtitle: 'เข้าถึงเครื่องมือวิเคราะห์และจัดการการเงินส่วนบุคคล',
-                      color: const Color(0xFF9C27B0),
-                      isPromptKuu: true,
-                    ),
-                  ],
-                ),
-                // END NEW PRODUCT GROUP
-                _buildProductGroup(
-                  context,
-                  title: 'เงินฝาก',
-                  products: [
-                    _ProductItem(
-                      icon: Icons.savings_outlined,
-                      title: 'ออมทรัพย์ดิจิทัล',
-                      subtitle: 'ดอกเบี้ยสูง เปิดง่ายผ่านแอป',
-                      color: const Color(0xFF4CAF50),
-                    ),
-                    _ProductItem(
-                      icon: Icons.wallet_outlined,
-                      title: 'ฝากประจำพิเศษ',
-                      subtitle: 'รับดอกเบี้ยทันทีเมื่อฝาก',
-                      color: const Color(0xFF2196F3),
-                    ),
-                  ],
-                ),
-                _buildProductGroup(
-                  context,
-                  title: 'สินเชื่อบ้าน',
-                  products: [
-                    _ProductItem(
-                      icon: Icons.home_work_outlined,
-                      title: 'สินเชื่อบ้านใหม่',
-                      subtitle: 'กู้ซื้อบ้านใหม่ ดอกเบี้ยพิเศษ',
-                      color: const Color(0xFFFF9800),
-                    ),
-                    _ProductItem(
-                      icon: Icons.house_siding_outlined,
-                      title: 'รีไฟแนนซ์บ้าน',
-                      subtitle: 'ลดภาระดอกเบี้ย ยืดเวลาผ่อนชำระ',
-                      color: const Color(0xFFE91E63),
-                    ),
-                  ],
-                ),
-                _buildProductGroup(
-                  context,
-                  title: 'ประกัน',
-                  products: [
-                    _ProductItem(
-                      icon: Icons.health_and_safety_outlined,
-                      title: 'ประกันชีวิตและสุขภาพ',
-                      subtitle: 'คุ้มครองคุณและครอบครัว',
-                      color: const Color(0xFF673AB7),
-                    ),
-                    _ProductItem(
-                      icon: Icons.directions_car_outlined,
-                      title: 'ประกันภัยรถยนต์',
-                      subtitle: 'คุ้มครองครบวงจรทุกประเภทรถ',
-                      color: const Color(0xFF795548),
-                    ),
-                  ],
-                ),
-                _buildProductGroup(
-                  context,
-                  title: 'บริการอื่นๆ',
-                  products: [
-                    _ProductItem(
-                      icon: Icons.credit_card_outlined,
-                      title: 'บัตรเครดิต',
-                      subtitle: 'สมัครบัตรเครดิตพร้อมสิทธิพิเศษ',
-                      color: const Color(0xFF607D8B),
-                    ),
-                    _ProductItem(
-                      icon: Icons.qr_code_scanner_outlined,
-                      title: 'สแกนจ่าย QR',
-                      subtitle: 'จ่ายง่าย สบายกระเป๋า',
-                      color: const Color(0xFF00BCD4),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 100),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSliverAppBar() {
-    return SliverAppBar(
-      expandedHeight: 120,
-      floating: false,
-      pinned: true,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      flexibleSpace: FlexibleSpaceBar(
-        title: const Text(
-          'ผลิตภัณฑ์ธนาคาร',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-            color: Color(0xFF1E293B),
-          ),
-        ),
-        titlePadding: const EdgeInsets.only(left: 24, bottom: 16),
-        background: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFF8FAFC), Color(0xFFE2E8F0)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWelcomeCard(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(24, 20, 24, 32),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF2196F3), Color(0xFF1976D2)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF2196F3).withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.stars, color: Colors.white, size: 28),
-              const SizedBox(width: 12),
-              const Text(
-                'พิเศษสำหรับคุณ',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'ค้นพบผลิตภัณฑ์ทางการเงินที่เหมาะกับคุณโดยเฉพาะ เพื่ออนาคตที่มั่นคงยิ่งขึ้น',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white.withOpacity(0.8),
-            ),
-          ),
-          const SizedBox(height: 24),
-          ElevatedButton.icon(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('กำลังดูข้อเสนอพิเศษ!'),
-                  backgroundColor: Color(0xFF4CAF50),
-                ),
-              );
-            },
-            icon: const Icon(Icons.flash_on, size: 20),
-            label: const Text('ดูข้อเสนอพิเศษ'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: const Color(0xFF2196F3),
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProductGroup(BuildContext context, {required String title, required List<_ProductItem> products}) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 12),
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Placeholder for the bank logo
+            Icon(Icons.home_work, color: Colors.deepOrange.shade700, size: 28),
+            const SizedBox(width: 8),
+            Text(
+              'CH BANK',
+              style: TextStyle(
+                color: Colors.deepOrange.shade700,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF374151),
+                fontSize: 20,
               ),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              children: products.asMap().entries.map((entry) {
-                final index = entry.key;
-                final item = entry.value;
-                final isLast = index == products.length - 1;
-
-                return _buildProductTile(item, isLast, context);
-              }).toList(),
-            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app, color: Colors.grey),
+            onPressed: () {
+              // Handle exit/logout
+            },
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildProductTile(_ProductItem item, bool isLast, BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () async { // Changed to async
-          if (item.isPromptKuu) {
-            final prefs = await SharedPreferences.getInstance();
-            final hasConsent = prefs.getBool('hasConsent') ?? false;
-
-            if (hasConsent) {
-              // If user has consented, go to HomePage (main app flow)
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
-            } else {
-              // If user has NOT consented, go to ConsentScreen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const ConsentScreen()),
-              );
-            }
-          } else {
-            // For other products, show a snackbar or navigate to a product detail page
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('เปิดหน้า: ${item.title}'),
-                backgroundColor: item.color,
-              ),
-            );
-          }
-        },
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            border: !isLast
-                ? Border(
-                    bottom: BorderSide(
-                      color: Colors.grey.withOpacity(0.1),
-                      width: 1,
-                    ),
-                  )
-                : null,
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: item.color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Icon(
-                  item.icon,
-                  color: item.color,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.title,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1F2937),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // User Info Section
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'สวัสดี\nคุณ น้ำใส',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade800,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      item.subtitle,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                        height: 1.3,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.star,
+                                color: Colors.blueAccent, size: 20),
+                            const SizedBox(width: 4),
+                            Text(
+                              'พอยท์ 0',
+                              style: TextStyle(color: Colors.grey.shade700),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  // Quick Action Icons
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(), // Important to disable inner scrolling
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    children: [
+                      _buildQuickActionButton(
+                          Icons.swap_horiz, 'โอนเงิน', Colors.deepOrange),
+                      _buildQuickActionButton(
+                          Icons.currency_bitcoin, 'เติมเงิน', Colors.orange),
+                      _buildQuickActionButton(
+                          Icons.account_balance_wallet, 'ชำระเงินกู้', Colors.orange),
+                      _buildQuickActionButton(
+                          Icons.qr_code_scanner, 'สแกน', Colors.orange),
+                      _buildQuickActionButton(
+                          Icons.emoji_events, 'ตรวจรางวัล', Colors.orange),
+                    ],
+                  ),
+                ],
               ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.grey[400],
-                size: 24,
+            ),
+            const SizedBox(height: 16), // Spacer between sections
+            // Product Section
+            _buildSectionHeader('ผลิตภัณฑ์'),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              color: Colors.white,
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 4,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: [
+                  _buildProductButton(
+                      Icons.credit_score, 'PromptKuu', Colors.blue,(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const ConsentScreen()));
+                      }),
+                  _buildProductButton(
+                      Icons.account_box, 'เปิดบัญชี', Colors.deepOrange,(){}),
+                  _buildProductButton(
+                      Icons.loyalty, 'ซื้อสลาก', Colors.orange,(){}),
+                  _buildProductButton(
+                      Icons.money, 'ขอสินเชื่อ', Colors.orange,(){}),
+                  _buildProductButton(
+                      Icons.home_work_outlined, 'ทรัพย์ NPA', Colors.orange,(){}),
+                ],
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 16), // Spacer between sections
+            // Document Section
+            _buildSectionHeader('ขอหนังสือ / เอกสาร'),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              color: Colors.white,
+              child: Column(
+                children: [
+                  _buildDocumentButton(
+                      Icons.description, 'ขอ e-Statement', Colors.deepOrange),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20), // Bottom padding
+          ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business_center),
+            label: 'บริการ',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance),
+            label: 'บัญชี',
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.deepOrange,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.home, color: Colors.white, size: 30),
+            ),
+            label: '', // No label for the central home button
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'แจ้งเตือน',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'ตั้งค่า',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.deepOrange,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed, // To show all labels
+        backgroundColor: Colors.white,
       ),
     );
   }
+
+  Widget _buildQuickActionButton(IconData icon, String label, Color iconColor) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            shape: BoxShape.circle,
+            border: Border.all(color: iconColor.withOpacity(0.3)),
+          ),
+          child: Icon(icon, color: iconColor, size: 30),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductButton(IconData icon, String label, Color iconColor, VoidCallback onTap) {
+  return GestureDetector( // ใช้ GestureDetector เพื่อตรวจจับการแตะ
+    onTap: onTap, // กำหนดฟังก์ชัน onTap ที่รับเข้ามา
+    child: Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            shape: BoxShape.circle,
+            border: Border.all(color: iconColor.withOpacity(0.3)),
+          ),
+          child: Icon(icon, color: iconColor, size: 30),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  );
 }
 
-class _ProductItem {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color color;
-  final bool isPromptKuu;
+  Widget _buildDocumentButton(IconData icon, String label, Color iconColor) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            shape: BoxShape.circle,
+            border: Border.all(color: iconColor.withOpacity(0.3)),
+          ),
+          child: Icon(icon, color: iconColor, size: 30),
+        ),
+        const SizedBox(width: 16),
+        Text(
+          label,
+          style: TextStyle(fontSize: 16, color: Colors.grey.shade800),
+        ),
+        const Spacer(),
+        Icon(Icons.arrow_forward_ios, color: Colors.grey.shade400, size: 18),
+      ],
+    );
+  }
 
-  const _ProductItem({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-    this.isPromptKuu = false,
-  });
+  Widget _buildSectionHeader(String title) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      color: Colors.grey.shade100, // Light grey background for section titles
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey.shade700,
+        ),
+      ),
+    );
+  }
 }
