@@ -31,7 +31,7 @@ class _ProductPageState extends State<ProductScreen> {
             Icon(Icons.home_work, color: Colors.deepOrange.shade700, size: 28),
             const SizedBox(width: 8),
             Text(
-              'CH BANK',
+              'GHB BANK',
               style: TextStyle(
                 color: Colors.deepOrange.shade700,
                 fontWeight: FontWeight.bold,
