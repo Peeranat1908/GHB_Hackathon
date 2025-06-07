@@ -13,6 +13,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const ProductScreen(), // <<< Change this to ProductScreen
+      theme: ThemeData(
+        fontFamily: 'NotoSansThai_Condensed',
+      ),
     );
   }
 }
