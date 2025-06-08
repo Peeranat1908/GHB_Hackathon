@@ -66,8 +66,8 @@ class _HomePageState extends State<HomePage> {
           currentIndex: _selectedIndex,
           selectedFontSize: 13,
           unselectedFontSize: 11,
-          selectedLabelStyle: const TextStyle(fontFamily: 'Kanit'),
-          unselectedLabelStyle: const TextStyle(fontFamily: 'Kanit'),
+          selectedLabelStyle: const TextStyle(fontFamily: 'NotoSansThai_Condensed'),
+          unselectedLabelStyle: const TextStyle(fontFamily: 'NotoSansThai_Condensed'),
           selectedItemColor: const Color(0xFFE74C3C), // เปลี่ยนสีให้เข้ากับธีม
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,

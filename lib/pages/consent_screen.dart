@@ -26,13 +26,13 @@ class ConsentScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF667EEA).withOpacity(0.1),
+                  color: const Color.fromARGB(255, 255, 47, 47).withOpacity(0.3),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(
                   Icons.privacy_tip_outlined,
                   size: 60,
-                  color: Color(0xFF667EEA),
+                  color: Color.fromARGB(255, 255, 47, 47),
                 ),
               ),
               const SizedBox(height: 32),
@@ -58,14 +58,14 @@ class ConsentScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () => _setConsent(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF667EEA),
+                  backgroundColor: const Color.fromARGB(255, 255, 47, 47),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   elevation: 5,
-                  shadowColor: const Color(0xFF667EEA).withOpacity(0.4),
+                  shadowColor: const Color.fromARGB(255, 255, 47, 47).withOpacity(0.4),
                 ),
                 child: const Text(
                   'ยอมรับและดำเนินการต่อ',
@@ -84,7 +84,7 @@ class ConsentScreen extends StatelessWidget {
                   'อ่านนโยบายความเป็นส่วนตัว',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF667EEA),
+                    color: Color.fromARGB(255, 255, 47, 47),
                     decoration: TextDecoration.underline,
                   ),
                 ),

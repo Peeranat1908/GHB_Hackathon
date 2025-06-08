@@ -131,22 +131,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               const Icon(Icons.calendar_month, color: Color(0xFF4CAF50), size: 16),
                               const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  'วันศุกร์ที่ ${DateTime.now().day} ${[
-                                    'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน',
-                                    'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม',
-                                    'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-                                  ][DateTime.now().month - 1]} ${DateTime.now().year + 543}',
-                                  style: const TextStyle(
-                                    fontFamily: 'NotoSansThai_Condensed',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black87,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+// ...existing code...
+Expanded(
+  child: Text(
+    '${[
+      'วันอาทิตย์',
+      'วันจันทร์',
+      'วันอังคาร',
+      'วันพุธ',
+      'วันพฤหัสบดี',
+      'วันศุกร์',
+      'วันเสาร์'
+    ][DateTime.now().weekday % 7]}ที่ ${DateTime.now().day} ${[
+      'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน',
+      'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม',
+      'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+    ][DateTime.now().month - 1]} ${DateTime.now().year + 543}',
+    style: const TextStyle(
+      fontFamily: 'NotoSansThai_Condensed',
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: Colors.black87,
+    ),
+    overflow: TextOverflow.ellipsis,
+  ),
+),
+// ...existing code...
                             ],
                           ),
                         ),

@@ -62,7 +62,7 @@ class _ProductPageState extends State<ProductScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'สวัสดี\nคุณ น้ำใส',
+                        'สวัสดี\nคุณ น้ำปรุง',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,

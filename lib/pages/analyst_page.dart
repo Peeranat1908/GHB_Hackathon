@@ -215,14 +215,14 @@ class _AnalystScreenState extends State<AnalystScreen>
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+          colors: [Color.fromARGB(255, 168, 11, 11), Color.fromARGB(255, 255, 47, 47)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF667EEA).withOpacity(0.3),
+            color: const Color(0xFFFFA000).withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -749,3 +749,4 @@ class _AnalystScreenState extends State<AnalystScreen>
     );
   }
 }
+
